@@ -1,6 +1,6 @@
 package studentrentalwedsite.webtest;
-import lombok.Getter;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
 

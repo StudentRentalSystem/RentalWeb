@@ -49,8 +49,8 @@
              class="card mb-4 shadow p-3 mb-5 bg-body rounded" style="width: 100%; max-width: 1700px; margin: auto;">
 
             <div class="row g-0">
-                <!-- 資料區 60% -->
-                <div id="dataBlock" class="col-md-7">
+                <!-- 資料區 -->
+                <div id="dataBlock" class="">
                     <!-- 上懸bar-->
                     <nav id="upperBar" class="navbar navbar-light bg-light px-3 py-4">
                         <h3 >租屋資料</h3>
@@ -65,7 +65,7 @@
                             </tr>
                             <tr>
                                 <th>租金</th>
-                                <td th:text="${post.rentalRange}">text</td>
+                                <td th:text="${post.rentalRange[0].minRental + ' ~ ' + post.rentalRange[0].maxRental + '元'}">text</td>
                             </tr>
                             <tr>
                                 <th>坪局</th>
@@ -73,7 +73,7 @@
                             </tr>
                             <tr>
                                 <th>格局</th>
-                                <td th:text="${post.layout}">text</td>
+                                <td th:text="${post.layout.livingRoom + '廳 ' + post.layout.bathroom + '衛 ' + post.layout.bedroom + '房'}">text</td>
                             </tr>
                             <tr>
                                 <th>性別限制</th>
@@ -97,7 +97,8 @@
                             </tr>
                             <tr>
                                 <th>聯絡方式</th>
-                                <td th:text="${post.contactInfos}">text</td>
+                                <td th:text="${post.contactInfos[0].contactPerson}">text</td>
+                                <td th:text="${post.contactInfos[0].phones[0]}">電話</td>
                             </tr>
                             </tbody>
                         </table>
