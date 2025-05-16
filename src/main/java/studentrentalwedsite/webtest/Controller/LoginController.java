@@ -56,9 +56,12 @@ public class LoginController {
     @PostMapping("/login")
     public String LoginAction(@RequestParam String LoginName, @RequestParam String Password, Model model) {
 
+        System.out.println("LoginAction");
+        System.out.println(LoginName);
+        System.out.println(Password);
+
         if(ValidateUser(LoginName, Password)) {
-            System.out.println("進入錯誤處理區塊");
-            return "MainPage";
+            return "redirect:/MainPage";
         } else {
             System.out.println("進入錯誤處理區塊");
             return "redirect:/LoginPage?error=1";
@@ -70,12 +73,14 @@ public class LoginController {
                                @RequestParam String signupPassword,
                                @RequestParam String signupConfirmPassword) {
 
+        System.out.println("signupAction");
+
         // Account name existed
         if(userDatabase.containsKey(signupName)) {
             return "redirect:/LoginPage?error=2";
         }
 
-        // Input Two Password not equal
+        // Input Two Password is not equal
         if(!signupPassword.equals(signupConfirmPassword)) {
             return "redirect:/LoginPage?error=3";
         }
