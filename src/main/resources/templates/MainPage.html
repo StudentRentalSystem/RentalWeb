@@ -65,7 +65,10 @@
                             </tr>
                             <tr>
                                 <th>租金</th>
-                                <td th:text="${post.rentalRange[0].minRental + ' ~ ' + post.rentalRange[0].maxRental + '元'}">text</td>
+                                <td th:text="${post.rentalRange[0].minRental == post.rentalRange[0].maxRental
+                                                ? post.rentalRange[0].minRental + '元'
+                                                : post.rentalRange[0].minRental + ' ~ ' + post.rentalRange[0].maxRental + '元'}"
+                                                >text</td>
                             </tr>
                             <tr>
                                 <th>坪局</th>
@@ -97,9 +100,30 @@
                             </tr>
                             <tr>
                                 <th>聯絡方式</th>
-                                <td th:text="${post.contactInfos[0].contactPerson}">text</td>
-                                <td th:text="${post.contactInfos[0].phones[0]}">電話</td>
+                                <td colspan="2">
+                                    <div>
+                                        <span class="label">聯絡人：</span>
+                                        <span th:text="${#strings.isEmpty(post.contactInfos[0].contactPerson) ? '未知' : post.contactInfos[0].contactPerson}">
+                                        聯絡人名稱
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span class="label">電話：</span>
+                                        <span th:text="${#lists.isEmpty(post.contactInfos[0].phones) ||
+                                                         #strings.isEmpty(post.contactInfos[0].phones[0]) ? '未知' : post.contactInfos[0].phones[0]}">
+                                        電話號碼
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span class="label">Line Id：</span>
+                                        <span th:text="${#lists.isEmpty(post.contactInfos[0].lineIds) ||
+                                                         #strings.isEmpty(post.contactInfos[0].lineIds[0]) ? '未知' : post.contactInfos[0].lineIds[0]}">
+                                        Line ID
+                                        </span>
+                                    </div>
+                                </td>
                             </tr>
+
                             </tbody>
                         </table>
                     </div>
