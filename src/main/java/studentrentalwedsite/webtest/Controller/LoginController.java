@@ -1,10 +1,12 @@
 package studentrentalwedsite.webtest.Controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import studentrentalwedsite.webtest.service.UserService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,25 +14,7 @@ import java.util.Map;
 @Controller
 public class LoginController {
 
-    /**
-     * <p>Some Userdata use for testing login and signup</p>
-     *
-     *
-    */
-    private static final Map<String, String> userDatabase = new HashMap<>();
-    static {
-        userDatabase.put("test", "test");
-        userDatabase.put("admin", "admin");
-        userDatabase.put("123", "123");
-    }
-
-
-    private boolean ValidateUser(String username, String password) {
-
-        System.out.println("Validating");
-        String storedPassword = userDatabase.get(username);
-        return storedPassword != null && storedPassword.equals(password);
-    }
+    UserService userService = new UserService();
 
     @RequestMapping("/LoginPage")
     public String LoginPage(@RequestParam(required = false) String error,
@@ -53,14 +37,27 @@ public class LoginController {
         return "LoginSignupPage";
     }
 
+
+    /**
+     *
+     * @param LoginName
+     * @param Password
+     * @param session this one is recording who login now
+     */
     @PostMapping("/login")
-    public String LoginAction(@RequestParam String LoginName, @RequestParam String Password, Model model) {
+    public String LoginAction(@RequestParam String LoginName,
+                              @RequestParam String Password,
+                              HttpSession session,
+                              Model model) {
 
         System.out.println("LoginAction");
         System.out.println(LoginName);
         System.out.println(Password);
 
-        if(ValidateUser(LoginName, Password)) {
+
+        if(userService.validateUser(LoginName, Password)) {
+            // session record user login now
+            session.setAttribute("CurrentUser", LoginName);
             return "redirect:/MainPage";
         } else {
             System.out.println("進入錯誤處理區塊");
@@ -75,18 +72,18 @@ public class LoginController {
 
         System.out.println("signupAction");
 
-        // Account name existed
-        if(userDatabase.containsKey(signupName)) {
-            return "redirect:/LoginPage?error=2";
-        }
 
         // Input Two Password is not equal
         if(!signupPassword.equals(signupConfirmPassword)) {
             return "redirect:/LoginPage?error=3";
         }
 
-        // Put new Account data to Hashmap
-        userDatabase.put(signupName, signupPassword);
+        // Account name existed
+        // return false for UserName existed, true for success signup
+        if(!userService.registerUser(signupName, signupPassword)) {
+            return "redirect:/LoginPage?error=2";
+        }
+
         return "redirect:/LoginPage?success=true";
     }
 }

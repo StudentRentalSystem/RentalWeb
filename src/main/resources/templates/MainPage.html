@@ -31,11 +31,11 @@
     <!-- 帳號等等資訊 -->
     <div class="account-dropdown ms-3">
         <!-- 帳號名可更改 -->
-        <button id="accountBtn" class="btn btn-outline-primary rounded-circle">Account</button>
+        <button id="accountBtn" class="btn btn-outline-primary rounded-circle" th:text="${UserName}">Account</button>
         <div class="dropdown-content">
             <a href="#">收藏</a>
             <a href="#">搜尋歷史</a>
-            <a href="#">登出</a>
+            <a href="/logout">登出</a>
         </div>
     </div>
 </nav>
