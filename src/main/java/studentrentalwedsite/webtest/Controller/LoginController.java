@@ -16,7 +16,7 @@ public class LoginController {
 
     UserService userService = new UserService();
 
-    @RequestMapping("/LoginPage")
+    @RequestMapping("/loginpage")
     public String LoginPage(@RequestParam(required = false) String error,
                             @RequestParam(required = false) String success,
                             Model model) {
@@ -58,10 +58,10 @@ public class LoginController {
         if(userService.validateUser(LoginName, Password)) {
             // session record user login now
             session.setAttribute("CurrentUser", LoginName);
-            return "redirect:/MainPage";
+            return "redirect:/index";
         } else {
             System.out.println("進入錯誤處理區塊");
-            return "redirect:/LoginPage?error=1";
+            return "redirect:/loginpage?error=1";
         }
     }
 
@@ -75,15 +75,15 @@ public class LoginController {
 
         // Input Two Password is not equal
         if(!signupPassword.equals(signupConfirmPassword)) {
-            return "redirect:/LoginPage?error=3";
+            return "redirect:/loginpage?error=3";
         }
 
         // Account name existed
         // return false for UserName existed, true for success signup
         if(!userService.registerUser(signupName, signupPassword)) {
-            return "redirect:/LoginPage?error=2";
+            return "redirect:/loginpage?error=2";
         }
 
-        return "redirect:/LoginPage?success=true";
+        return "redirect:/loginpage?success=true";
     }
 }

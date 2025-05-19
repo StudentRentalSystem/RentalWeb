@@ -24,4 +24,6 @@ public class UserService {
         userRepository.save(newUser);
         return true; // return true for success
     }
+
+    //add Collection Logic
 }

@@ -14,25 +14,38 @@ public class MainPageController {
 
 
 
-    @RequestMapping("/MainPage")
+    @RequestMapping("/index")
     public String MainPage(Model model, HttpSession session) {
         System.out.println("MainPage");
 
-        String username = session.getAttribute("CurrentUser").toString();
+        Object userObj = session.getAttribute("CurrentUser");
+
+        // 沒有登入就導回登入頁
+        if (userObj == null) {
+            return "redirect:/loginpage";
+        }
+
+        String username = userObj.toString();
+        System.out.println("username:" + username);
         model.addAttribute("UserName", username);
+
 
         // these codes for show posts
         JsonTransformer jsonTransformer = new JsonTransformer();
         List<RentalDataJsonStruct> Posts =  jsonTransformer.JsonTransform("TestData/PostData.json");
         model.addAttribute("posts", Posts);
 
+
         return "MainPage";
     }
 
+
+
+    // All controller use same logout GetMapping
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:/LoginPage";
+        return "redirect:/loginpage";
     }
 
 }

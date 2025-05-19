@@ -14,14 +14,14 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/LoginPage**", "/login", "/signup", "/logout", "/",
-                                         "/MainPage**","/css/**", "/js/**").permitAll()
+                        .requestMatchers("/loginpage**", "/login", "/signup", "/logout", "/",
+                                         "/index**", "/collect/**","/css/**", "/js/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 // Logout
                 .logout(logout -> logout
                         .logoutUrl("/logout")                     // 處理登出請求
-                        .logoutSuccessUrl("/LoginPage?logout")    // 登出成功導向
+                        .logoutSuccessUrl("/loginpage?logout")    // 登出成功導向
                         .permitAll()
                 )
                 .csrf(csrf -> csrf.disable());

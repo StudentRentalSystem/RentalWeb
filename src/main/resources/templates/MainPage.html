@@ -31,7 +31,7 @@
     <!-- 帳號等等資訊 -->
     <div class="account-dropdown ms-3">
         <!-- 帳號名可更改 -->
-        <button id="accountBtn" class="btn btn-outline-primary rounded-circle" th:text="${UserName}">Account</button>
+        <button id="accountBtn" class="btn btn-outline-primary rounded-circle" th:text="${UserName}" th:attr="UserName=${UserName}">Account</button>
         <div class="dropdown-content">
             <a href="#">收藏</a>
             <a href="#">搜尋歷史</a>
@@ -45,7 +45,7 @@
     <div id="post-list">
 
         <!-- 單一貼文樣板 -->
-        <div th:each="post : ${posts}"
+        <div th:each="post : ${posts}" th:attr="id=${post.id}"
              class="card mb-4 shadow p-3 mb-5 bg-body rounded" style="width: 100%; max-width: 1700px; margin: auto;">
 
             <div class="row g-0">
@@ -130,9 +130,11 @@
 
                     <!-- 收藏按鈕 -->
                     <div class="d-flex justify-content-end mb-3" style="padding-right: 20px;">
-                        <button id="colletBtn" class="btn btn-outline-primary">
-                            收藏
-                        </button>
+                        <form th:action="@{'/collect/' + ${UserName} + '/' + ${post.id}}" method="post">
+                            <button id="collectBtn" class="btn btn-outline-primary">
+                                收藏
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
