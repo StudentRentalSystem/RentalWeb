@@ -130,11 +130,12 @@
 
                     <!-- 收藏按鈕 -->
                     <div class="d-flex justify-content-end mb-3" style="padding-right: 20px;">
-                        <form th:action="@{'/collect/' + ${UserName} + '/' + ${post.id}}" method="post">
-                            <button id="collectBtn" class="btn btn-outline-primary">
-                                收藏
-                            </button>
-                        </form>
+                        <button class="btn btn-outline-secondary collect-btn"
+                                th:attr="data-post-id=${post.id}, data-collected=false"
+                                onclick="toggleCollect(this)">
+                            <i class="fa fa-heart-o"></i>
+                            <span>收藏</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -145,6 +146,7 @@
     </div>
 </div>
 
+<script src="/js/collect.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
