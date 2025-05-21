@@ -26,4 +26,12 @@ public class UserService {
     }
 
     //add Collection Logic
+    public void addCollection(String username, String postId) {
+        System.out.println("add collection");
+    }
+
+    //delete Collection Logic
+    public void deleteCollection(String username, String postId) {
+        System.out.println("delete collection");
+    }
 }

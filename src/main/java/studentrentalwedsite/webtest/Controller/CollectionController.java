@@ -3,6 +3,7 @@ package studentrentalwedsite.webtest.Controller;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.*;
+import studentrentalwedsite.webtest.service.UserService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +11,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/collect")
 public class CollectionController {
+
+    UserService userService = new UserService();
 
     @PostMapping("/{username}/{id}")
     public Map<String, String> collectPost(@PathVariable String username,
@@ -46,10 +49,10 @@ public class CollectionController {
         // 👉 在這裡操作資料庫的收藏邏輯（你之後可以補 DB 呼叫）
         if (isCollect) {
             System.out.println(currentUser + " 收藏了貼文 " + postId);
-            // 實際應該是呼叫 Service 去寫入收藏紀錄
+            userService.addCollection(username, postId);
         } else {
             System.out.println(currentUser + " 取消收藏貼文 " + postId);
-            // 呼叫 Service 移除收藏紀錄
+            userService.deleteCollection(username, postId);
         }
 
         response.put("status", "success");

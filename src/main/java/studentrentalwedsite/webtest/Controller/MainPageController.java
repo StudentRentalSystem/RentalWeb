@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import studentrentalwedsite.webtest.JsonTransformer;
 import studentrentalwedsite.webtest.RentalDataJsonStruct;
+import studentrentalwedsite.webtest.service.UserService;
+
 import java.util.List;
 
 @Controller
 public class MainPageController {
-
-
 
     @RequestMapping("/index")
     public String MainPage(Model model, HttpSession session) {
