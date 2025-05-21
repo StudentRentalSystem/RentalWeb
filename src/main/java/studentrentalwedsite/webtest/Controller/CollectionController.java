@@ -14,6 +14,21 @@ public class CollectionController {
 
     UserService userService = new UserService();
 
+    @GetMapping("/{username}")
+    public Map<String, String> getCollection(@PathVariable String username,
+                                             HttpSession httpSession) {
+        Map<String, String> respone = new HashMap<>();
+
+        System.out.println("get collection");
+        userService.getCollection(username);
+
+        respone.put("status", "success");
+        respone.put("message", "success");
+
+        return respone;
+    }
+
+
     @PostMapping("/{username}/{id}")
     public Map<String, String> collectPost(@PathVariable String username,
                                            @PathVariable String id,

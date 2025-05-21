@@ -34,4 +34,9 @@ public class UserService {
     public void deleteCollection(String username, String postId) {
         System.out.println("delete collection");
     }
+
+    // this function is not done
+    public void getCollection(String username) {
+        System.out.println("get collection");
+    }
 }

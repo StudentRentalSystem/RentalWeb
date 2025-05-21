@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>租屋資訊-Collection</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .account-dropdown { position: relative; display: inline-block; }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      background-color: #f1f1f1;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+    .dropdown-content a { color: black; padding: 12px 16px; display: block; text-decoration: none; }
+    .dropdown-content a:hover { background-color: #ddd; }
+    .account-dropdown:hover .dropdown-content { display: block; }
+  </style>
+</head>
+<body>
+<!-- 上方搜尋與帳號 -->
+<nav class="navbar navbar-light bg-light px-1 py-1 shadow p-3 mb-5 bg-body rounded sticky-top" style="height: 85px;">
+  <form class="d-flex flex-grow-1">
+    <input id="inputBox" class="form-control me-2" type="search" placeholder="Input" aria-label="Search">
+    <button id="summitBtn" class="btn btn-outline-success" type="submit">搜尋</button>
+  </form>
+  <!-- 帳號等等資訊 -->
+  <div class="account-dropdown ms-3">
+    <!-- 帳號名可更改 -->
+    <button id="accountBtn" class="btn btn-outline-primary rounded-circle" th:text="${UserName}" th:attr="UserName=${UserName}">Account</button>
+    <div class="dropdown-content">
+      <a href="/collection">收藏</a>
+      <a href="#">搜尋歷史</a>
+      <a href="/logout">登出</a>
+    </div>
+  </div>
+</nav>
+
+<!-- 貼文區 -->
+<div class="container mt-3" style="margin-top: 95px;">
+  <div id="post-list">
+
+    <!-- 單一貼文樣板 -->
+    <div th:each="post : ${posts}" th:attr="id=${post.id.getOid()}"
+         class="card mb-4 shadow p-3 mb-5 bg-body rounded" style="width: 100%; max-width: 1700px; margin: auto;">
+
+      <div class="row g-0">
+        <!-- 資料區 -->
+        <div id="dataBlock" class="">
+          <!-- 上懸bar-->
+          <nav id="upperBar" class="navbar navbar-light bg-light px-3 py-4">
+            <h3 >租屋資料</h3>
+          </nav>
+          <!-- 資料列表 -->
+          <div id="dataTable"class="card-body">
+            <table class="table table-hover">
+              <tbody>
+              <tr>
+                <th>地址</th>
+                <td th:text="${post.address}">text</td>
+              </tr>
+              <tr>
+                <th>租金</th>
+                <td th:text="${post.rentalRange[0].minRental == post.rentalRange[0].maxRental
+                                                ? post.rentalRange[0].minRental + '元'
+                                                : post.rentalRange[0].minRental + ' ~ ' + post.rentalRange[0].maxRental + '元'}"
+                >text</td>
+              </tr>
+              <tr>
+                <th>坪局</th>
+                <td th:text="${post.area}">text</td>
+              </tr>
+              <tr>
+                <th>格局</th>
+                <td th:text="${post.layout.livingRoom + '廳 ' + post.layout.bathroom + '衛 ' + post.layout.bedroom + '房'}">text</td>
+              </tr>
+              <tr>
+                <th>性別限制</th>
+                <td th:text="${post.genderLimit}">text</td>
+              </tr>
+              <tr>
+                <th>寵物</th>
+                <td th:text="${post.allowPet}">text</td>
+              </tr>
+              <tr>
+                <th>養魚</th>
+                <td th:text="${post.allowFish}">text</td>
+              </tr>
+              <tr>
+                <th>開伙</th>
+                <td th:text="${post.allowCook}">text</td>
+              </tr>
+              <tr>
+                <th>電梯</th>
+                <td th:text="${post.hasElevator}">text</td>
+              </tr>
+              <tr>
+                <th>聯絡方式</th>
+                <td colspan="2">
+                  <div>
+                    <span class="label">聯絡人：</span>
+                    <span th:text="${#strings.isEmpty(post.contactInfos[0].contactPerson) ? '未知' : post.contactInfos[0].contactPerson}">
+                                        聯絡人名稱
+                                        </span>
+                  </div>
+                  <div>
+                    <span class="label">電話：</span>
+                    <span th:text="${#lists.isEmpty(post.contactInfos[0].phones) ||
+                                                         #strings.isEmpty(post.contactInfos[0].phones[0]) ? '未知' : post.contactInfos[0].phones[0]}">
+                                        電話號碼
+                                        </span>
+                  </div>
+                  <div>
+                    <span class="label">Line Id：</span>
+                    <span th:text="${#lists.isEmpty(post.contactInfos[0].lineIds) ||
+                                                         #strings.isEmpty(post.contactInfos[0].lineIds[0]) ? '未知' : post.contactInfos[0].lineIds[0]}">
+                                        Line ID
+                                        </span>
+                  </div>
+                </td>
+              </tr>
+
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 收藏按鈕 -->
+          <div class="d-flex justify-content-end mb-3" style="padding-right: 20px;">
+            <button class="btn btn-outline-secondary collect-btn"
+                    th:attr="data-post-id=${post.id.getOid()}, data-collected=false"
+                    onclick="toggleCollect(this)">
+              <i class="fa fa-heart-o"></i>
+              <span>收藏</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+  </div>
+</div>
+
+<script src="/js/collect.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
