@@ -1,4 +1,4 @@
-package studentrentalwedsite.webtest.Controller;
+package studentrentalwedsite.webtest.controller;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
