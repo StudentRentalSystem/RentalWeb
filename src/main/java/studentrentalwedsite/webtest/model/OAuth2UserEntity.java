@@ -1,8 +1,9 @@
 package studentrentalwedsite.webtest.model;
 
-import jakarta.persistence.Id;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
@@ -11,14 +12,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class OAuth2UserEntity {
     @Id
     private String id;
-
+    @Indexed(unique=true)
     private String email;
-    private String username;
+    private String name;
     private String picture;
 
-    public OAuth2UserEntity(String email, String username, String picture) {
+    public OAuth2UserEntity(String email, String name, String picture) {
         this.email = email;
-        this.username = username;
+        this.name = name;
         this.picture = picture;
     }
 }

@@ -32,8 +32,7 @@ public class SecurityConfig {
                         .logoutUrl("/logout")                     // 處理登出請求
                         .logoutSuccessUrl("/loginpage?logout")    // 登出成功導向
                         .permitAll()
-                )
-                .csrf(csrf -> csrf.disable());
+                );
 
         return http.build();
     }
