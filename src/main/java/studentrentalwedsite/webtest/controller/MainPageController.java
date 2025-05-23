@@ -17,10 +17,16 @@ public class MainPageController {
     @GetMapping("/index")
     public String MainPage(@AuthenticationPrincipal OAuth2User oAuth2User, Model model, HttpSession session) {
         String username = null;
+        String picture = null;
+
+
         if(oAuth2User != null) {
             username = oAuth2User.getAttribute("name");
+            picture = oAuth2User.getAttribute("picture");
+
             System.out.println(username);
             model.addAttribute("UserName", username);
+            model.addAttribute("UserPicture", picture);
         } else {
             // 2. 傳統 Session 登入判斷，只有當 Google OAuth2 未登入時使用
             Object userObj = session.getAttribute("CurrentUser");
@@ -35,6 +41,7 @@ public class MainPageController {
 
             System.out.println("username:" + username);
             model.addAttribute("UserName", username);
+            model.addAttribute("UserPicture", null);
         }
 
         // 讀取貼文資料不變

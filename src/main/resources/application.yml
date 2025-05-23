@@ -16,5 +16,5 @@ spring:
             user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
   data:
     mongodb:
-      uri: mongodb://app:house_rental_app$@localhost:27017/app?authSource=app
+      uri: "mongodb://app:house_rental_app$@localhost:27017/app?authSource=app"
       auto-index-creation: true
