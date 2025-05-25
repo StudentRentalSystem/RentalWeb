@@ -4,34 +4,50 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RentalDataJsonStruct {
 
     @JsonProperty("_id")
     private IdWrapper id;
 
     @JsonProperty("坪數")
-    private List<Integer> area;
+    private List<Float> area;
 
     @JsonProperty("是否可養寵物")
-    private String allowPet;
+    private Integer allowPet;
 
     @JsonProperty("是否可開伙")
-    private String allowCook;
+    private Integer allowCook;
+
+    @JsonProperty("是否可養魚")
+    private Integer allowFish;
+
+    @JsonProperty("是否有電梯")
+    private Integer hasElevator;
+
+    @JsonProperty("是否有汽車停車位")
+    private Integer hasCarParking;
+
+    @JsonProperty("是否有機車停車位")
+    private Integer hasScooterParking;
+
+    @JsonProperty("是否可租屋補助")
+    private Integer rentalSubsidy;
+
+    @JsonProperty("是否有頂樓加蓋")
+    private Integer hasRooftopAddOn;
 
     @JsonProperty("格局")
     private Layout layout;
 
     @JsonProperty("性別限制")
-    private String genderLimit;
+    private GenderLimit genderLimit;
 
     @JsonProperty("地址")
     private String address;
 
-    @JsonProperty("是否可養魚")
-    private String allowFish;
-
     @JsonProperty("租金")
-    private List<RentalRange> rentalRange;
+    private RentalRange rentalRange;
 
     @JsonProperty("聯絡方式")
     private List<ContactInfo> contactInfos;
@@ -39,8 +55,7 @@ public class RentalDataJsonStruct {
     @JsonProperty("照片")
     private List<String> photos;
 
-    @JsonProperty("是否有電梯")
-    private String hasElevator;
+    // --- Getters & Setters ---
 
     public IdWrapper getId() {
         return id;
@@ -50,28 +65,76 @@ public class RentalDataJsonStruct {
         this.id = id;
     }
 
-    public List<Integer> getArea() {
+    public List<Float> getArea() {
         return area;
     }
 
-    public void setArea(List<Integer> area) {
+    public void setArea(List<Float> area) {
         this.area = area;
     }
 
-    public String getAllowPet() {
+    public Integer getAllowPet() {
         return allowPet;
     }
 
-    public void setAllowPet(String allowPet) {
+    public void setAllowPet(Integer allowPet) {
         this.allowPet = allowPet;
     }
 
-    public String getAllowCook() {
+    public Integer getAllowCook() {
         return allowCook;
     }
 
-    public void setAllowCook(String allowCook) {
+    public void setAllowCook(Integer allowCook) {
         this.allowCook = allowCook;
+    }
+
+    public Integer getAllowFish() {
+        return allowFish;
+    }
+
+    public void setAllowFish(Integer allowFish) {
+        this.allowFish = allowFish;
+    }
+
+    public Integer getHasElevator() {
+        return hasElevator;
+    }
+
+    public void setHasElevator(Integer hasElevator) {
+        this.hasElevator = hasElevator;
+    }
+
+    public Integer getHasCarParking() {
+        return hasCarParking;
+    }
+
+    public void setHasCarParking(Integer hasCarParking) {
+        this.hasCarParking = hasCarParking;
+    }
+
+    public Integer getHasScooterParking() {
+        return hasScooterParking;
+    }
+
+    public void setHasScooterParking(Integer hasScooterParking) {
+        this.hasScooterParking = hasScooterParking;
+    }
+
+    public Integer getRentalSubsidy() {
+        return rentalSubsidy;
+    }
+
+    public void setRentalSubsidy(Integer rentalSubsidy) {
+        this.rentalSubsidy = rentalSubsidy;
+    }
+
+    public Integer getHasRooftopAddOn() {
+        return hasRooftopAddOn;
+    }
+
+    public void setHasRooftopAddOn(Integer hasRooftopAddOn) {
+        this.hasRooftopAddOn = hasRooftopAddOn;
     }
 
     public Layout getLayout() {
@@ -82,11 +145,11 @@ public class RentalDataJsonStruct {
         this.layout = layout;
     }
 
-    public String getGenderLimit() {
+    public GenderLimit getGenderLimit() {
         return genderLimit;
     }
 
-    public void setGenderLimit(String genderLimit) {
+    public void setGenderLimit(GenderLimit genderLimit) {
         this.genderLimit = genderLimit;
     }
 
@@ -98,19 +161,11 @@ public class RentalDataJsonStruct {
         this.address = address;
     }
 
-    public String getAllowFish() {
-        return allowFish;
-    }
-
-    public void setAllowFish(String allowFish) {
-        this.allowFish = allowFish;
-    }
-
-    public List<RentalRange> getRentalRange() {
+    public RentalRange getRentalRange() {
         return rentalRange;
     }
 
-    public void setRentalRange(List<RentalRange> rentalRange) {
+    public void setRentalRange(RentalRange rentalRange) {
         this.rentalRange = rentalRange;
     }
 
@@ -130,13 +185,7 @@ public class RentalDataJsonStruct {
         this.photos = photos;
     }
 
-    public String getHasElevator() {
-        return hasElevator;
-    }
-
-    public void setHasElevator(String hasElevator) {
-        this.hasElevator = hasElevator;
-    }
+    // --- Inner Classes ---
 
     public static class IdWrapper {
         @JsonProperty("$oid")
@@ -154,8 +203,10 @@ public class RentalDataJsonStruct {
     public static class Layout {
         @JsonProperty("廳")
         private int livingRoom;
+
         @JsonProperty("衛")
         private int bathroom;
+
         @JsonProperty("房")
         private int bedroom;
 
@@ -205,14 +256,62 @@ public class RentalDataJsonStruct {
         }
     }
 
+    public static class GenderLimit {
+        @JsonProperty("男")
+        private Integer male;
+
+        @JsonProperty("女")
+        private Integer female;
+
+        public Integer getMale() {
+            return male;
+        }
+
+        public void setMale(Integer male) {
+            this.male = male;
+        }
+
+        public Integer getFemale() {
+            return female;
+        }
+
+        public void setFemale(Integer female) {
+            this.female = female;
+        }
+
+        public String getGenderLimitText() {
+            if (male != null && female != null) {
+                if (male == 1 && female == 1) {
+                    return "不限";
+                } else if (male == 1) {
+                    return "限男";
+                } else if (female == 1) {
+                    return "限女";
+                } else {
+                    return "不限"; // 或 "無限制"、"不接受任何性別" 視邏輯需求
+                }
+            }
+            return "未知";
+        }
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class ContactInfo {
         @JsonProperty("聯絡人")
         private String contactPerson;
+
         @JsonProperty("手機")
         private List<String> phones;
+
         @JsonProperty("lineID")
         private List<String> lineIds;
+
+        // 保留可擴充欄位
+        @JsonProperty("lineLink")
+        private List<String> lineLinks;
+
+        @JsonProperty("others")
+        private List<String> others;
 
         public String getContactPerson() {
             return contactPerson;
@@ -236,6 +335,22 @@ public class RentalDataJsonStruct {
 
         public void setLineIds(List<String> lineIds) {
             this.lineIds = lineIds;
+        }
+
+        public List<String> getLineLinks() {
+            return lineLinks;
+        }
+
+        public void setLineLinks(List<String> lineLinks) {
+            this.lineLinks = lineLinks;
+        }
+
+        public List<String> getOthers() {
+            return others;
+        }
+
+        public void setOthers(List<String> others) {
+            this.others = others;
         }
     }
 }

@@ -72,10 +72,11 @@
                             </tr>
                             <tr>
                                 <th>租金</th>
-                                <td th:text="${post.rentalRange[0].minRental == post.rentalRange[0].maxRental
-                                                ? post.rentalRange[0].minRental + '元'
-                                                : post.rentalRange[0].minRental + ' ~ ' + post.rentalRange[0].maxRental + '元'}"
-                                                >text</td>
+                                <td th:text="${post.rentalRange.minRental == post.rentalRange.maxRental
+                                                ? post.rentalRange.minRental + '元'
+                                                : post.rentalRange.minRental + ' ~ ' + post.rentalRange.maxRental + '元'}">
+                                    text
+                                </td>
                             </tr>
                             <tr>
                                 <th>坪局</th>
@@ -87,7 +88,7 @@
                             </tr>
                             <tr>
                                 <th>性別限制</th>
-                                <td th:text="${post.genderLimit}">text</td>
+                                <td th:text="${post.genderLimit.getGenderLimitText()}">text</td>
                             </tr>
                             <tr>
                                 <th>寵物</th>
