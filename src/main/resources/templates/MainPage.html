@@ -79,12 +79,20 @@
                                 </td>
                             </tr>
                             <tr>
+                                <th>租屋補助</th>
+                                <td th:text="${post.rentalSubsidy}">text</td>
+                            </tr>
+                            <tr>
                                 <th>坪局</th>
                                 <td th:text="${post.area}">text</td>
                             </tr>
                             <tr>
                                 <th>格局</th>
                                 <td th:text="${post.layout.livingRoom + '廳 ' + post.layout.bathroom + '衛 ' + post.layout.bedroom + '房'}">text</td>
+                            </tr>
+                            <tr>
+                                <th>是否有頂樓加蓋</th>
+                                <td th:text="${post.hasRooftopAddOn}">text</td>
                             </tr>
                             <tr>
                                 <th>性別限制</th>
@@ -105,6 +113,14 @@
                             <tr>
                                 <th>電梯</th>
                                 <td th:text="${post.hasElevator}">text</td>
+                            </tr>
+                            <tr>
+                                <th>機車停車位</th>
+                                <td th:text="${post.hasScooterParking}">text</td>
+                            </tr>
+                            <tr>
+                                <th>汽車停車位</th>
+                                <td th:text="${post.hasCarParking}">text</td>
                             </tr>
                             <tr>
                                 <th>聯絡方式</th>
