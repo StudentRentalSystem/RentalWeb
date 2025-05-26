@@ -1,5 +1,7 @@
 package studentrentalwedsite.webtest.service;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -7,6 +9,8 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import studentrentalwedsite.webtest.model.OAuth2UserEntity;
 import studentrentalwedsite.webtest.repository.OAuth2UserRepository;
 
@@ -26,6 +30,15 @@ public class CustomOAuth2Service implements OAuth2UserService<OAuth2UserRequest,
             OAuth2UserEntity user = new OAuth2UserEntity(email, name, picture);
             oAuth2UserRepository.save(user);
         }
+
+        // add UserName to session
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attr != null) {
+            HttpServletRequest request = attr.getRequest();
+            HttpSession session = request.getSession(true);
+            session.setAttribute("CurrentUser", name);
+        }
+
         return oauth2User;
     }
 }

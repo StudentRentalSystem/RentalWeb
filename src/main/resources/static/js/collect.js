@@ -3,18 +3,34 @@ function toggleCollect(button) {
     let isCollected = button.getAttribute("data-collected") === "true";
     const method = isCollected ? "DELETE" : "POST";
 
-    // from HTML file get username
-    const username = document.getElementById("accountBtn").getAttribute("UserName");
 
 
-    fetch(`/collect/${username}/${postId}`, {
+    // Debug log
+    console.log("🪪 postId =", postId);
+    console.log("📦 method =", method);
+
+    // 錯誤防呆
+    if (!postId) {
+        alert("⚠️ 收藏失敗，使用者或貼文資訊缺失");
+        return;
+    }
+
+    fetch(`/collect/${postId}`, {
         method: method,
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include'
     })
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) {
+                throw new Error("HTTP 錯誤：" + res.status);
+            }
+            return res.json();
+        })
         .then(data => {
+            console.log("✅ 後端回傳：", data);
+
             if (data.status === 'success') {
+                // 切換收藏狀態
                 isCollected = !isCollected;
                 button.setAttribute("data-collected", isCollected);
 
@@ -35,11 +51,11 @@ function toggleCollect(button) {
                     text.textContent = "收藏";
                 }
             } else {
-                alert("操作失敗：" + data.message);
+                alert("操作失敗：" + (data.message || "未知原因"));
             }
         })
         .catch(err => {
-            console.error("錯誤：", err);
-            alert("⚠️ 系統錯誤");
+            console.error("❌ 收藏請求錯誤：", err);
+            alert("⚠️ 系統錯誤，請稍後再試");
         });
 }

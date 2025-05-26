@@ -17,6 +17,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/loginpage**", "/login", "/oauth2/**", "/loadPosts", "/css/**", "/js/**").permitAll()
+                        .requestMatchers("/collect/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2->oauth2
@@ -34,6 +35,8 @@ public class SecurityConfig {
                         .permitAll()
                 );
 
+        // 之後要加 token 處理 /collect 相關的請求
+        http.csrf(csrf -> csrf.disable());
         return http.build();
     }
 
