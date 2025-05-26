@@ -44,10 +44,11 @@ public class MainPageController {
             model.addAttribute("UserPicture", null);
         }
 
-        // 讀取貼文資料不變
+        /*
         JsonTransformer jsonTransformer = new JsonTransformer();
         List<RentalDataJsonStruct> Posts = jsonTransformer.JsonTransform("TestData/PostData.json");
         model.addAttribute("posts", Posts);
+        */
 
         return "MainPage";
     }

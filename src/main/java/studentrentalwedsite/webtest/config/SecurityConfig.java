@@ -16,7 +16,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http, CustomOAuth2Service customOAuth2Service) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/loginpage**", "/login", "/oauth2/**", "/css/**", "/js/**").permitAll()
+                        .requestMatchers("/loginpage**", "/login", "/oauth2/**", "/loadPosts", "/css/**", "/js/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2->oauth2

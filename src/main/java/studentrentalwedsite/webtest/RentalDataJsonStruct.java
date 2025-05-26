@@ -236,7 +236,11 @@ public class RentalDataJsonStruct {
     }
 
     public static class RentalRange {
+
+        @JsonProperty("minRental")
         private int minRental;
+
+        @JsonProperty("maxRental")
         private int maxRental;
 
         public int getMinRental() {
@@ -255,6 +259,7 @@ public class RentalDataJsonStruct {
             this.maxRental = maxRental;
         }
     }
+
 
     public static class GenderLimit {
         @JsonProperty("男")
