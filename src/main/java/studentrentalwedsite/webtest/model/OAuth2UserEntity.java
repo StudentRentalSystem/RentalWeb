@@ -6,6 +6,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @Document(collection="users")
@@ -16,6 +19,8 @@ public class OAuth2UserEntity {
     private String email;
     private String name;
     private String picture;
+
+    private List<String> collections = new ArrayList<String>();
 
     public OAuth2UserEntity(String email, String name, String picture) {
         this.email = email;

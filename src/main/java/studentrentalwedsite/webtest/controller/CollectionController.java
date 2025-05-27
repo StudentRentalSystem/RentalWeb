@@ -2,7 +2,10 @@ package studentrentalwedsite.webtest.controller;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
+import studentrentalwedsite.webtest.service.CustomOAuth2Service;
 import studentrentalwedsite.webtest.service.UserService;
 
 import java.util.*;
@@ -11,44 +14,65 @@ import java.util.*;
 @RequestMapping("/collect")
 public class CollectionController {
 
-    private final UserService userService = new UserService();
+    private final CustomOAuth2Service customOAuth2Service;
 
-    /*
-    @GetMapping
-    public ResponseEntity<?> getCollection(HttpSession session) {
-        String username = getSessionUser(session);
-        if (username == null) return unauthorized();
-
-        return ResponseEntity.ok(Map.of("status", "success", "collections"));
+    public CollectionController(CustomOAuth2Service customOAuth2Service) {
+        this.customOAuth2Service = customOAuth2Service;
     }
-    */
 
     // ✅ 收藏貼文
     @PostMapping("/{postId}")
-    public ResponseEntity<?> collect(@PathVariable String postId, HttpSession session) {
-        String username = getSessionUser(session);
-        if (username == null) return unauthorized();
+    public ResponseEntity<?> collect(@PathVariable String postId,
+                                     @AuthenticationPrincipal OAuth2User oAuth2User) {
 
-        userService.addCollection(username, postId);
-        return ResponseEntity.ok(Map.of("status", "success", "message", "收藏成功"));
+        System.out.println("collecting");
+
+        String email = getOAuth2Email(oAuth2User);
+        if (email == null) return unauthorized();
+
+        boolean success = customOAuth2Service.addCollection(email, postId);
+        if (success) {
+            return ResponseEntity.ok(Map.of("status", "success", "message", "收藏成功"));
+        } else {
+            return ResponseEntity.status(400).body(Map.of("status", "fail", "message", "重複收藏"));
+        }
     }
 
-    // ✅ 取消收藏
+    // ❌ 取消收藏
     @DeleteMapping("/{postId}")
-    public ResponseEntity<?> uncollect(@PathVariable String postId, HttpSession session) {
-        String username = getSessionUser(session);
-        if (username == null) return unauthorized();
+    public ResponseEntity<?> uncollect(@PathVariable String postId,
+                                       @AuthenticationPrincipal OAuth2User oAuth2User) {
 
-        userService.deleteCollection(username, postId);
-        return ResponseEntity.ok(Map.of("status", "success", "message", "取消收藏成功"));
+        System.out.println("uncollecting");
+
+        String email = getOAuth2Email(oAuth2User);
+        if (email == null) return unauthorized();
+
+        boolean success = customOAuth2Service.deleteCollection(email, postId);
+        if (success) {
+            return ResponseEntity.ok(Map.of("status", "success", "message", "取消收藏成功"));
+        } else {
+            return ResponseEntity.status(400).body(Map.of("status", "fail", "message", "尚未收藏"));
+        }
     }
 
-    // 🔒 session 驗證封裝
-    private String getSessionUser(HttpSession session) {
-        return (String) session.getAttribute("CurrentUser");
+    // 📦 查詢收藏
+    @GetMapping
+    public ResponseEntity<?> getCollection(@AuthenticationPrincipal OAuth2User oAuth2User) {
+        String email = getOAuth2Email(oAuth2User);
+        if (email == null) return unauthorized();
+
+        List<String> collections = customOAuth2Service.getCollections(email);
+        return ResponseEntity.ok(Map.of("status", "success", "collections", collections));
     }
 
-    // 🔐 未登入處理封裝
+    // 🔐 OAuth2 使用者 email 抽出
+    private String getOAuth2Email(OAuth2User oAuth2User) {
+        if (oAuth2User == null) return null;
+        return oAuth2User.getAttribute("email");
+    }
+
+    // 🔒 未登入處理
     private ResponseEntity<?> unauthorized() {
         return ResponseEntity.status(401).body(Map.of("status", "fail", "message", "尚未登入"));
     }

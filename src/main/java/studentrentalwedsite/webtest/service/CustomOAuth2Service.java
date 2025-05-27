@@ -14,6 +14,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import studentrentalwedsite.webtest.model.OAuth2UserEntity;
 import studentrentalwedsite.webtest.repository.OAuth2UserRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class CustomOAuth2Service implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     @Autowired
@@ -40,5 +43,40 @@ public class CustomOAuth2Service implements OAuth2UserService<OAuth2UserRequest,
         }
 
         return oauth2User;
+    }
+
+    public boolean addCollection(String email, String postId) {
+        OAuth2UserEntity user = oAuth2UserRepository.findByEmail(email);
+        if (user == null) return false;
+
+        List<String> collections = user.getCollections();
+        if (!collections.contains(postId)) {
+            collections.add(postId);
+            user.setCollections(collections);
+            oAuth2UserRepository.save(user);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean deleteCollection(String email, String postId) {
+        OAuth2UserEntity user = oAuth2UserRepository.findByEmail(email);
+        if (user == null) return false;
+
+        List<String> collections = user.getCollections();
+        if (collections.remove(postId)) {
+            user.setCollections(collections);
+            oAuth2UserRepository.save(user);
+            return true;
+        }
+        return false;
+    }
+
+    public List<String> getCollections(String email) {
+        OAuth2UserEntity user = oAuth2UserRepository.findByEmail(email);
+        if (user != null) {
+            return user.getCollections();
+        }
+        return new ArrayList<>();
     }
 }
