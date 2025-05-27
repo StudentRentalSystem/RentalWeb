@@ -1,8 +1,12 @@
 package studentrentalwedsite.webtest.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,15 +59,21 @@ public class MainPageController {
 
 
 
-    // All controller use same logout GetMapping
+    // All controllers use the same logout GetMapping
+    // now can log out oAuth
     @GetMapping("/logout")
-    public String logout(HttpSession session) {
-        // 傳統 Session 登出
-        session.invalidate();
+    public String logout(HttpServletRequest request,
+                         HttpServletResponse response,
+                         Authentication  auth) {
 
-        // 如果你要用 Spring Security 提供的 logout，可以在 SecurityConfig 裡設置 logout URL
-        // 或者這裡用 SecurityContextLogoutHandler 處理
+        if(auth != null) {
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
 
+        // 清掉自己的 session（OAuth2User 也存在於 session 裡）
+        request.getSession().invalidate();
+
+        // 重新導向
         return "redirect:/loginpage";
     }
 

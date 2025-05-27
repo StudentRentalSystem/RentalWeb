@@ -22,30 +22,56 @@
   </style>
 </head>
 <body>
-<!-- 上方搜尋與帳號 -->
-<nav class="navbar navbar-light bg-light px-1 py-1 shadow p-3 mb-5 bg-body rounded sticky-top" style="height: 85px;">
-  <form class="d-flex flex-grow-1">
-    <input id="inputBox" class="form-control me-2" type="search" placeholder="Input" aria-label="Search">
-    <button id="summitBtn" class="btn btn-outline-success" type="submit">搜尋</button>
-  </form>
-  <!-- 帳號等等資訊 -->
-  <div class="account-dropdown ms-3">
-    <!-- 帳號名可更改 -->
-    <button id="accountBtn" class="btn p-0 border-0 rounded-circle overflow-hidden" style="width:40px; height:40px;">
-      <img th:if="${UserPicture != null}"
-           th:src="${UserPicture}"
-           alt="avatar"
-           style="width:100%; height:100%; object-fit:cover; border-radius:50%;">
-      <span th:if="${UserPicture == null}" th:text="${UserName}"
-            style="font-size:12px; width:100%; height:100%; display:flex; justify-content:center; align-items:center;"></span>
-    </button>
-    <div class="dropdown-content">
-      <a href="/collection">收藏</a>
-      <a href="#">搜尋歷史</a>
-      <a href="/logout">登出</a>
+
+<!-- 四等分 Navbar -->
+<nav class="navbar navbar-expand-lg bg-light shadow sticky-top">
+  <div class="container-fluid d-flex justify-content-between text-center">
+
+    <!-- Avatar / Username -->
+    <div class="flex-fill d-flex justify-content-center align-items-center">
+      <a href="#" class="text-decoration-none">
+        <!-- 有頭像就顯示頭像 -->
+        <img th:if="${UserPicture != null}"
+             th:src="${UserPicture}"
+             class="rounded-circle"
+             style="width: 40px; height: 40px; object-fit: cover;"
+             alt="User Avatar" />
+
+        <!-- 沒有頭像就顯示名字縮寫或文字 -->
+        <span th:if="${UserPicture == null}"
+              th:text="${UserName}"
+              class="d-inline-block bg-secondary text-white rounded-circle fw-bold"
+              style="width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; font-size: 14px;">
+    </span>
+      </a>
     </div>
+
+    <!-- 首頁 -->
+    <div class="flex-fill">
+      <a href="/index" class="btn btn-link text-decoration-none">
+        首頁
+      </a>
+    </div>
+
+    <!-- 搜尋歷史 -->
+    <div class="flex-fill">
+      <a href="#" class="btn btn-link text-decoration-none">
+        搜尋歷史
+      </a>
+    </div>
+
+    <!-- 登出 -->
+    <div class="flex-fill">
+      <a href="/logout" class="btn btn-link text-danger text-decoration-none">
+        登出
+      </a>
+    </div>
+
   </div>
 </nav>
+
+
+
 
 <!-- 貼文區 -->
 <div class="container mt-3" style="margin-top: 95px;">

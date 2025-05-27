@@ -5,7 +5,7 @@ function handleSearch(event) {
 }
 
 function fetchPosts(keyword = "") {
-    let url = "/loadPosts";
+    let url = "/searchposts";
     if (keyword) {
         url += "?keyword=" + encodeURIComponent(keyword);
     }
