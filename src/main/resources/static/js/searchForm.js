@@ -1,7 +1,23 @@
+let userCollections = new Set();
+
+function fetchCollections() {
+    return fetch("/collect")
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === "success") {
+                userCollections = new Set(data.collections);
+            }
+        });
+}
+
 function handleSearch(event) {
     event.preventDefault(); // 防止表單預設送出
     const keyword = document.getElementById("inputBox").value.trim();
-    fetchPosts(keyword);
+
+    // 先抓 Collection 接著再處理 fetchPosts(keyword)
+    fetchCollections().then(() =>{
+       fetchPosts(keyword);
+    });
 }
 
 function fetchPosts(keyword = "") {
@@ -66,7 +82,11 @@ function fetchPosts(keyword = "") {
                 const elevator = post["是否有電梯"] ?? "未知";
                 const carPark = post["是否有汽車停車位"] ?? "未知";
                 const scooterPark = post["是否有機車停車位"] ?? "未知";
+
+                // oid 是否包括檢測
                 const oid = post["_id"]?.["$oid"] || "";
+                const isCollected = userCollections.has(oid);
+
 
                 const html = `
                 <div id="${oid}" class="card mb-4 shadow p-3 mb-5 bg-body rounded" style="width: 100%; max-width: 1700px; margin: auto;">
@@ -106,11 +126,12 @@ function fetchPosts(keyword = "") {
                                 </table>
                             </div>
                             <div class="d-flex justify-content-end mb-3" style="padding-right: 20px;">
-                                <button class="btn btn-outline-secondary collect-btn"
+                                <button class="btn ${isCollected ? 'btn-danger' : 'btn-outline-secondary'} collect-btn"
                                         data-post-id="${oid}"
-                                        data-collected="false"
+                                        data-collected="${isCollected}"
                                         onclick="toggleCollect(this)">
-                                    <i class="fa fa-heart-o"></i> <span>收藏</span>
+                                        <i class="fa ${isCollected ? 'fa-heart' : 'fa-heart-o'}"></i>
+                                        <span>${isCollected ? '取消收藏' : '收藏'}</span>
                                 </button>
                             </div>
                         </div>

@@ -30,152 +30,91 @@
     <!-- Avatar / Username -->
     <div class="flex-fill d-flex justify-content-center align-items-center">
       <a href="#" class="text-decoration-none">
-        <!-- 有頭像就顯示頭像 -->
         <img th:if="${UserPicture != null}"
              th:src="${UserPicture}"
              class="rounded-circle"
              style="width: 40px; height: 40px; object-fit: cover;"
              alt="User Avatar" />
-
-        <!-- 沒有頭像就顯示名字縮寫或文字 -->
         <span th:if="${UserPicture == null}"
               th:text="${UserName}"
               class="d-inline-block bg-secondary text-white rounded-circle fw-bold"
               style="width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; font-size: 14px;">
-    </span>
+        </span>
       </a>
     </div>
 
-    <!-- 首頁 -->
-    <div class="flex-fill">
-      <a href="/index" class="btn btn-link text-decoration-none">
-        首頁
-      </a>
-    </div>
-
-    <!-- 搜尋歷史 -->
-    <div class="flex-fill">
-      <a href="#" class="btn btn-link text-decoration-none">
-        搜尋歷史
-      </a>
-    </div>
-
-    <!-- 登出 -->
-    <div class="flex-fill">
-      <a href="/logout" class="btn btn-link text-danger text-decoration-none">
-        登出
-      </a>
-    </div>
+    <div class="flex-fill"><a href="/index" class="btn btn-link text-decoration-none">首頁</a></div>
+    <div class="flex-fill"><a href="#" class="btn btn-link text-decoration-none">搜尋歷史</a></div>
+    <div class="flex-fill"><a href="/logout" class="btn btn-link text-danger text-decoration-none">登出</a></div>
 
   </div>
 </nav>
 
-
-
-
 <!-- 貼文區 -->
 <div class="container mt-3" style="margin-top: 95px;">
   <div id="post-list">
-
-    <!-- 單一貼文樣板 -->
-    <div th:each="post : ${posts}" th:attr="id=${post.id.getOid()}"
-         class="card mb-4 shadow p-3 mb-5 bg-body rounded" style="width: 100%; max-width: 1700px; margin: auto;">
-
+    <div th:each="post : ${posts}"
+         class="card mb-4 shadow p-3 mb-5 bg-body rounded"
+         style="width: 100%; max-width: 1700px; margin: auto;">
       <div class="row g-0">
-        <!-- 資料區 -->
-        <div id="dataBlock" class="">
-          <!-- 上懸bar-->
-          <nav id="upperBar" class="navbar navbar-light bg-light px-3 py-4">
-            <h3 >租屋資料</h3>
+        <div id="dataBlock">
+          <nav class="navbar navbar-light bg-light px-3 py-4">
+            <h3>租屋資料</h3>
           </nav>
-          <!-- 資料列表 -->
-          <div id="dataTable"class="card-body">
+          <div class="card-body">
             <table class="table table-hover">
               <tbody>
-              <tr>
-                <th>地址</th>
-                <td th:text="${post.address}">text</td>
+              <tr><th>地址</th><td th:text="${post.address}">地址</td></tr>
+              <tr><th>租金</th>
+                <td>
+                  <span th:if="${post.rentalRange != null and post.rentalRange.minRental == post.rentalRange.maxRental}"
+                        th:text="${post.rentalRange.minRental + '元'}">0元</span>
+                  <span th:if="${post.rentalRange != null and post.rentalRange.minRental != post.rentalRange.maxRental}"
+                        th:text="${post.rentalRange.minRental + ' ~ ' + post.rentalRange.maxRental + '元'}">0 ~ 0元</span>
+                  <span th:if="${post.rentalRange == null}">未知</span>
+                </td>
               </tr>
-              <tr>
-                <th>租金</th>
-                <td th:text="${post.rentalRange[0].minRental == post.rentalRange[0].maxRental
-                                                ? post.rentalRange[0].minRental + '元'
-                                                : post.rentalRange[0].minRental + ' ~ ' + post.rentalRange[0].maxRental + '元'}"
-                >text</td>
+              <tr><th>租屋補助</th><td th:text="${post.rentalSubsidy}">租屋補助</td></tr>
+              <tr><th>坪數</th><td th:text="${post.area == null or #lists.isEmpty(post.area) ? '未知' : post.area[0] + ' 坪'}">坪數</td></tr>
+              <tr><th>格局</th>
+                <td th:text="${post.layout != null ? post.layout.livingRoom + '廳 ' + post.layout.bathroom + '衛 ' + post.layout.bedroom + '房' : '未知'}">格局</td>
               </tr>
-              <tr>
-                <th>坪局</th>
-                <td th:text="${post.area}">text</td>
-              </tr>
-              <tr>
-                <th>格局</th>
-                <td th:text="${post.layout.livingRoom + '廳 ' + post.layout.bathroom + '衛 ' + post.layout.bedroom + '房'}">text</td>
-              </tr>
+              <tr><th>是否有頂樓加蓋</th><td th:text="${post.hasRooftopAddOn}">頂樓加蓋</td></tr>
               <tr>
                 <th>性別限制</th>
-                <td th:text="${post.genderLimit}">text</td>
+                <td th:text="${post.genderLimit != null ? (post.genderLimit.male == 1 and post.genderLimit.female == 1 ? '不限' : post.genderLimit.male == 1 ? '限男' : post.genderLimit.female == 1 ? '限女' : '未知') : '未知'}">性別限制</td>
               </tr>
-              <tr>
-                <th>寵物</th>
-                <td th:text="${post.allowPet}">text</td>
-              </tr>
-              <tr>
-                <th>養魚</th>
-                <td th:text="${post.allowFish}">text</td>
-              </tr>
-              <tr>
-                <th>開伙</th>
-                <td th:text="${post.allowCook}">text</td>
-              </tr>
-              <tr>
-                <th>電梯</th>
-                <td th:text="${post.hasElevator}">text</td>
-              </tr>
+              <tr><th>寵物</th><td th:text="${post.allowPet}">寵物</td></tr>
+              <tr><th>養魚</th><td th:text="${post.allowFish}">養魚</td></tr>
+              <tr><th>開伙</th><td th:text="${post.allowCook}">開伙</td></tr>
+              <tr><th>電梯</th><td th:text="${post.hasElevator}">電梯</td></tr>
+              <tr><th>機車停車位</th><td th:text="${post.hasScooterParking}">機車停車位</td></tr>
+              <tr><th>汽車停車位</th><td th:text="${post.hasCarParking}">汽車停車位</td></tr>
               <tr>
                 <th>聯絡方式</th>
                 <td colspan="2">
-                  <div>
-                    <span class="label">聯絡人：</span>
-                    <span th:text="${#strings.isEmpty(post.contactInfos[0].contactPerson) ? '未知' : post.contactInfos[0].contactPerson}">
-                                        聯絡人名稱
-                                        </span>
-                  </div>
-                  <div>
-                    <span class="label">電話：</span>
-                    <span th:text="${#lists.isEmpty(post.contactInfos[0].phones) ||
-                                                         #strings.isEmpty(post.contactInfos[0].phones[0]) ? '未知' : post.contactInfos[0].phones[0]}">
-                                        電話號碼
-                                        </span>
-                  </div>
-                  <div>
-                    <span class="label">Line Id：</span>
-                    <span th:text="${#lists.isEmpty(post.contactInfos[0].lineIds) ||
-                                                         #strings.isEmpty(post.contactInfos[0].lineIds[0]) ? '未知' : post.contactInfos[0].lineIds[0]}">
-                                        Line ID
-                                        </span>
-                  </div>
+                  <div><span class="label">聯絡人：</span><span th:text="${post.contactInfos != null and !#lists.isEmpty(post.contactInfos) ? post.contactInfos[0].contactPerson : '未知'}">聯絡人</span></div>
+                  <div><span class="label">電話：</span><span th:text="${post.contactInfos != null and !#lists.isEmpty(post.contactInfos) and !#lists.isEmpty(post.contactInfos[0].phones) ? post.contactInfos[0].phones[0] : '未知'}">電話</span></div>
+                  <div><span class="label">Line ID：</span><span th:text="${post.contactInfos != null and !#lists.isEmpty(post.contactInfos) and !#lists.isEmpty(post.contactInfos[0].lineIds) ? post.contactInfos[0].lineIds[0] : '未知'}">Line ID</span></div>
+                  <div><span class="label">Line Link：</span><span th:text="${post.contactInfos != null and !#lists.isEmpty(post.contactInfos) and !#lists.isEmpty(post.contactInfos[0].lineLinks) ? post.contactInfos[0].lineLinks[0] : '未知'}">Line Link</span></div>
+                  <div><span class="label">Others：</span><span th:text="${post.contactInfos != null and !#lists.isEmpty(post.contactInfos) and !#lists.isEmpty(post.contactInfos[0].others) ? post.contactInfos[0].others[0] : '未知'}">Others</span></div>
                 </td>
               </tr>
-
               </tbody>
             </table>
           </div>
-
-          <!-- 收藏按鈕 -->
           <div class="d-flex justify-content-end mb-3" style="padding-right: 20px;">
-            <button class="btn btn-outline-secondary collect-btn"
-                    th:attr="data-post-id=${post.id.getOid()}, data-collected=false"
+            <button class="btn collect-btn"
+                    th:classappend="${collectedIds.contains(post.id) ? ' btn-danger' : ' btn-outline-secondary'}"
+                    th:attr="data-post-id=${post.id}, data-collected=${collectedIds.contains(post.id)}"
                     onclick="toggleCollect(this)">
-              <i class="fa fa-heart-o"></i>
-              <span>收藏</span>
+              <i class="fa" th:classappend="${collectedIds.contains(post.id) ? ' fa-heart' : ' fa-heart-o'}"></i>
+              <span th:text="${collectedIds.contains(post.id) ? '取消收藏' : '收藏'}">收藏</span>
             </button>
           </div>
         </div>
       </div>
     </div>
-
-
-
   </div>
 </div>
 

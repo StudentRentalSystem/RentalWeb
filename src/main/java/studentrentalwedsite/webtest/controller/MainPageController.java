@@ -10,10 +10,7 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import studentrentalwedsite.webtest.JsonTransformer;
-import studentrentalwedsite.webtest.RentalDataJsonStruct;
 
-import java.util.List;
 
 @Controller
 public class MainPageController {
