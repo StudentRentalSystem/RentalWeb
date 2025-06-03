@@ -48,7 +48,7 @@
         <!-- 下拉選單 -->
         <div class="dropdown-content">
             <a href="/collection">收藏</a>
-            <a href="#">搜尋歷史</a>
+            <a href="/history">搜尋歷史</a>
             <a href="/logout">登出</a>
         </div>
     </div>
@@ -58,122 +58,7 @@
 <div class="container mt-3" style="margin-top: 95px;">
     <div id="post-list">
 
-        <!-- 單一貼文樣板 -->
-        <div th:each="post : ${posts}" th:attr="id=${post.id.getOid()}"
-             class="card mb-4 shadow p-3 mb-5 bg-body rounded" style="width: 100%; max-width: 1700px; margin: auto;">
-
-            <div class="row g-0">
-                <!-- 資料區 -->
-                <div id="dataBlock" class="">
-                    <!-- 上懸bar-->
-                    <nav id="upperBar" class="navbar navbar-light bg-light px-3 py-4">
-                        <h3 >租屋資料</h3>
-                    </nav>
-                    <!-- 資料列表 -->
-                    <div id="dataTable"class="card-body">
-                        <table class="table table-hover">
-                            <tbody>
-                            <tr>
-                                <th>地址</th>
-                                <td th:text="${post.address}">text</td>
-                            </tr>
-                            <tr>
-                                <th>租金</th>
-                                <td th:text="${post.rentalRange.minRental == post.rentalRange.maxRental
-                                                ? post.rentalRange.minRental + '元'
-                                                : post.rentalRange.minRental + ' ~ ' + post.rentalRange.maxRental + '元'}">
-                                    text
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>租屋補助</th>
-                                <td th:text="${post.rentalSubsidy}">text</td>
-                            </tr>
-                            <tr>
-                                <th>坪局</th>
-                                <td th:text="${post.area}">text</td>
-                            </tr>
-                            <tr>
-                                <th>格局</th>
-                                <td th:text="${post.layout.livingRoom + '廳 ' + post.layout.bathroom + '衛 ' + post.layout.bedroom + '房'}">text</td>
-                            </tr>
-                            <tr>
-                                <th>是否有頂樓加蓋</th>
-                                <td th:text="${post.hasRooftopAddOn}">text</td>
-                            </tr>
-                            <tr>
-                                <th>性別限制</th>
-                                <td th:text="${post.genderLimit.getGenderLimitText()}">text</td>
-                            </tr>
-                            <tr>
-                                <th>寵物</th>
-                                <td th:text="${post.allowPet}">text</td>
-                            </tr>
-                            <tr>
-                                <th>養魚</th>
-                                <td th:text="${post.allowFish}">text</td>
-                            </tr>
-                            <tr>
-                                <th>開伙</th>
-                                <td th:text="${post.allowCook}">text</td>
-                            </tr>
-                            <tr>
-                                <th>電梯</th>
-                                <td th:text="${post.hasElevator}">text</td>
-                            </tr>
-                            <tr>
-                                <th>機車停車位</th>
-                                <td th:text="${post.hasScooterParking}">text</td>
-                            </tr>
-                            <tr>
-                                <th>汽車停車位</th>
-                                <td th:text="${post.hasCarParking}">text</td>
-                            </tr>
-                            <tr>
-                                <th>聯絡方式</th>
-                                <td colspan="2">
-                                    <div>
-                                        <span class="label">聯絡人：</span>
-                                        <span th:text="${#strings.isEmpty(post.contactInfos[0].contactPerson) ? '未知' : post.contactInfos[0].contactPerson}">
-                                        聯絡人名稱
-                                        </span>
-                                    </div>
-                                    <div>
-                                        <span class="label">電話：</span>
-                                        <span th:text="${#lists.isEmpty(post.contactInfos[0].phones) ||
-                                                         #strings.isEmpty(post.contactInfos[0].phones[0]) ? '未知' : post.contactInfos[0].phones[0]}">
-                                        電話號碼
-                                        </span>
-                                    </div>
-                                    <div>
-                                        <span class="label">Line Id：</span>
-                                        <span th:text="${#lists.isEmpty(post.contactInfos[0].lineIds) ||
-                                                         #strings.isEmpty(post.contactInfos[0].lineIds[0]) ? '未知' : post.contactInfos[0].lineIds[0]}">
-                                        Line ID
-                                        </span>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- 收藏按鈕 -->
-                    <div class="d-flex justify-content-end mb-3" style="padding-right: 20px;">
-                        <button class="btn btn-outline-secondary collect-btn"
-                                th:attr="data-post-id=${post.id.getOid()}, data-collected=false"
-                                onclick="toggleCollect(this)">
-                            <i class="fa fa-heart-o"></i>
-                            <span>收藏</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-
+        <h3 class="mb-4">🕵️ 搜尋</h3>
 
     </div>
 </div>

@@ -10,9 +10,34 @@ function fetchCollections() {
         });
 }
 
+function postSearchHistory(keyword) {
+    console.log("🚀 準備送出歷史 keyword:", keyword);
+
+    fetch("/historylist", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: new URLSearchParams({ keyword })
+    })
+        .then(res => res.json())
+        .then(data => {
+            console.log("📜 搜尋歷史已記錄：", data);
+        })
+        .catch(err => {
+            console.warn("⚠️ 搜尋歷史記錄失敗：", err);
+        });
+}
+
+
 function handleSearch(event) {
     event.preventDefault(); // 防止表單預設送出
     const keyword = document.getElementById("inputBox").value.trim();
+
+    if (!keyword) return;
+
+    // add to history
+    postSearchHistory(keyword);
 
     // 先抓 Collection 接著再處理 fetchPosts(keyword)
     fetchCollections().then(() =>{
@@ -22,9 +47,12 @@ function handleSearch(event) {
 
 function fetchPosts(keyword = "") {
     let url = "/searchposts";
+
+    /*
     if (keyword) {
         url += "?keyword=" + encodeURIComponent(keyword);
     }
+    */
 
     fetch(url)
         .then(res => res.json())

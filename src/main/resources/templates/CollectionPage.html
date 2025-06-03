@@ -44,7 +44,7 @@
     </div>
 
     <div class="flex-fill"><a href="/index" class="btn btn-link text-decoration-none">首頁</a></div>
-    <div class="flex-fill"><a href="#" class="btn btn-link text-decoration-none">搜尋歷史</a></div>
+    <div class="flex-fill"><a href="/history" class="btn btn-link text-decoration-none">搜尋歷史</a></div>
     <div class="flex-fill"><a href="/logout" class="btn btn-link text-danger text-decoration-none">登出</a></div>
 
   </div>
@@ -52,6 +52,9 @@
 
 <!-- 貼文區 -->
 <div class="container mt-3" style="margin-top: 95px;">
+
+  <h3 class="mb-4">🚩 收藏列表</h3>
+
   <div id="post-list">
     <div th:each="post : ${posts}"
          class="card mb-4 shadow p-3 mb-5 bg-body rounded"

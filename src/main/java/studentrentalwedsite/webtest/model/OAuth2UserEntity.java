@@ -7,7 +7,9 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -21,6 +23,7 @@ public class OAuth2UserEntity {
     private String picture;
 
     private List<String> collections = new ArrayList<String>();
+    private Map<String, String> searchHistory = new HashMap<>();
 
     public OAuth2UserEntity(String email, String name, String picture) {
         this.email = email;
